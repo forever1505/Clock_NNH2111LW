@@ -1,0 +1,22 @@
+name: Build EXE
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Tools
+        run: pip install pyinstaller pywebview
+      - name: Create EXE
+        run: |
+          echo "import webview; webview.create_window('Clock', 'index.html'); webview.start()" > run.py
+          pyinstaller --noconsole --onefile --add-data "index.html;." run.py
+      - name: Upload Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyClock-EXE
+          path: dist/run.exe
