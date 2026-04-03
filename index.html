@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Red Dark Clock - NNH2111LW</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: #0a0a0a; /* Nền đen sâu hơn */
+            color: #ffffff; 
+        }
+
+        /* Chuyển sang màu đỏ neon */
+        #time { 
+            font-size: 7.5rem; 
+            font-weight: 800; 
+            color: #ff3131; /* Màu đỏ rực */
+            text-shadow: 0 0 25px rgba(255, 49, 49, 0.4); /* Hiệu ứng tỏa sáng đỏ */
+            margin-bottom: 30px; 
+            font-variant-numeric: tabular-nums; 
+        }
+
+        button { 
+            padding: 14px 28px; 
+            font-size: 1.1rem; 
+            font-weight: 600;
+            cursor: pointer; 
+            border: 1px solid #444; 
+            border-radius: 12px; 
+            background-color: #1a1a1a; 
+            color: #ffffff; 
+            transition: all 0.2s ease; 
+            min-width: 180px; 
+            margin-bottom: 60px;
+        }
+
+        button:hover { 
+            background-color: #2a2a2a; 
+            border-color: #ff3131; /* Viền đỏ khi hover */
+            transform: translateY(-2px);
+        }
+
+        /* Khi copy thành công nút sẽ đổi sang màu đỏ */
+        button.success { 
+            background-color: #ff3131; 
+            color: #ffffff; 
+            border-color: #ff3131;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 25px;
+            font-size: 0.85rem;
+            color: #444;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="time">00:00</div>
+    <button id="copyBtn" onclick="copyTime()">SAO CHÉP GIỜ</button>
+
+    <div class="footer">Copyright by NNH2111LW</div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = `${hh}:${mm}`;
+        }
+
+        function copyTime() {
+            const timeText = document.getElementById('time').textContent;
+            const btn = document.getElementById('copyBtn');
+
+            navigator.clipboard.writeText(timeText).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = "ĐÃ SAO CHÉP!";
+                btn.classList.add('success');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('success');
+                }, 1000);
+            });
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+
+</body>
+</html>
